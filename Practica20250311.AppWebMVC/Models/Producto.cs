@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Practica20250311.AppWebMVC.Models;
 
@@ -13,8 +14,10 @@ public partial class Producto
 
     public decimal Precio { get; set; }
 
+    [Display(Name = "Marcas")]
     public int MarcaId { get; set; }
 
+    [Display(Name = "Categorias")]
     public int CategoriaId { get; set; }
 
     public virtual Categoria Categoria { get; set; } = null!;
