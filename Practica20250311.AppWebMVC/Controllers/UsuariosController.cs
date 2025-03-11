@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Practica20250311.AppWebMVC.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Practica20250311.AppWebMVC.Controllers
 {
@@ -53,10 +55,11 @@ namespace Practica20250311.AppWebMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Password,Email,FechaRegistro,UltimoInicioSesion,Estatus")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("Nombre,Password,Email,ConfirmarPassword")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
+                usuario.Password = CalcularHashMD5(usuario.Password);
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -151,6 +154,22 @@ namespace Practica20250311.AppWebMVC.Controllers
         private bool UsuarioExists(int id)
         {
             return _context.Usuarios.Any(e => e.Id == id);
+        }
+
+        private string CalcularHashMD5(string input)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2")); // "x2" convierte el byte en una cadena hexadecimal de dos caracteres.
+                }
+                return sb.ToString();
+            }
         }
     }
 }
