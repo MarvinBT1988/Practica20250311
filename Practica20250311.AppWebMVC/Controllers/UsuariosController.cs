@@ -88,33 +88,35 @@ namespace Practica20250311.AppWebMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Password,Email,FechaRegistro,UltimoInicioSesion,Estatus")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Email,Estatus")] Usuario usuario)
         {
             if (id != usuario.Id)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+           var  usuarioUpdate = await _context.Usuarios
+                .FirstOrDefaultAsync(m => m.Id == usuario.Id);
+            try
             {
-                try
-                {
-                    _context.Update(usuario);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UsuarioExists(usuario.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                usuarioUpdate.Nombre= usuario.Nombre;
+                usuarioUpdate.Email = usuario.Email;
+                usuarioUpdate.Estatus=usuario.Estatus;
+                _context.Update(usuarioUpdate);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UsuarioExists(usuario.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            
             return View(usuario);
         }
 
