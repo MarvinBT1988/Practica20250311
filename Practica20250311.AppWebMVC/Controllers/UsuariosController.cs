@@ -55,7 +55,7 @@ namespace Practica20250311.AppWebMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Nombre,Password,Email,ConfirmarPassword")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("Nombre,Password,Email,ConfirmarPassword,Rol")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace Practica20250311.AppWebMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Email,Estatus")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Email,Estatus,Rol")] Usuario usuario)
         {
             if (id != usuario.Id)
             {
@@ -101,6 +101,7 @@ namespace Practica20250311.AppWebMVC.Controllers
                 usuarioUpdate.Nombre= usuario.Nombre;
                 usuarioUpdate.Email = usuario.Email;
                 usuarioUpdate.Estatus=usuario.Estatus;
+                usuarioUpdate.Rol = usuario.Rol;
                 _context.Update(usuarioUpdate);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

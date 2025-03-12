@@ -27,6 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Estatus)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rol)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -48,6 +51,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.StrEstatus)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rol)
+                </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
