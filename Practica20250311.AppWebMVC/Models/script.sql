@@ -41,3 +41,6 @@ CREATE TABLE Usuarios (
     UltimoInicioSesion DATETIME,
     Estatus TINYINT DEFAULT 1 -- Usamos TINYINT para Estatus y un valor predeterminado de 1
 );
+-- Pendiente o 2025-03-13 8:35 am 
+ALTER TABLE Usuarios
+ADD Rol VARCHAR(50);

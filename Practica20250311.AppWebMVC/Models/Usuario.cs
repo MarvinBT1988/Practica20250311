@@ -44,4 +44,6 @@ public partial class Usuario
     [DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
     public string? ConfirmarPassword { get; set; } = null!;
+
+    public string? Rol { get; set; }
 }

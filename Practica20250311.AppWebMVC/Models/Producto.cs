@@ -14,7 +14,7 @@ public partial class Producto
     public string? Descripcion { get; set; }
 
     [Required(ErrorMessage = "El precio es obligatorio.")]
-    [Range(typeof(decimal), "0.01", "99999999.99", ErrorMessage = "El precio debe estar entre 0.01 y 99999999.99")]
+   // [Range(typeof(decimal), "0.01", "99999999.99", ErrorMessage = "El precio debe estar entre 0.01 y 99999999.99")]
     public decimal Precio { get; set; }
 
     [Display(Name = "Marcas")]
