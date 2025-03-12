@@ -11,9 +11,11 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Practica20250311.AppWebMVC.Controllers
 {
+    [Authorize]
     public class UsuariosController : Controller
     {
         private readonly Practica20250311DbContext _context;
@@ -69,10 +71,13 @@ namespace Practica20250311.AppWebMVC.Controllers
             }
             return View(usuario);
         }
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
+        [AllowAnonymous]
+        [HttpPost]
         public async Task<IActionResult> Login(Usuario usuario)
         {
             usuario.Password = CalcularHashMD5(usuario.Password);

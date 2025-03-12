@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Practica20250311.AppWebMVC.Models;
 
 namespace Practica20250311.AppWebMVC.Controllers
 {
+    [Authorize]
     public class CategoriasController : Controller
     {
         private readonly Practica20250311DbContext _context;
