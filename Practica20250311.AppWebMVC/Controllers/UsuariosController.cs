@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Practica20250311.AppWebMVC.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="ADMINISTRADOR")]
     public class UsuariosController : Controller
     {
         private readonly Practica20250311DbContext _context;
