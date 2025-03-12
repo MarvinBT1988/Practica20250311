@@ -72,9 +72,10 @@ namespace Practica20250311.AppWebMVC.Controllers
             return View(usuario);
         }
         [AllowAnonymous]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             // Hola mundo
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return View();
         }
         [AllowAnonymous]
