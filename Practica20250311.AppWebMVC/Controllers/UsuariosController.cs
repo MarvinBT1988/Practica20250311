@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Practica20250311.AppWebMVC.Models;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace Practica20250311.AppWebMVC.Controllers
 {
@@ -66,7 +69,34 @@ namespace Practica20250311.AppWebMVC.Controllers
             }
             return View(usuario);
         }
-
+        public IActionResult Login()
+        {
+            return View();
+        }
+        public async Task<IActionResult> Login(Usuario usuario)
+        {
+            usuario.Password = CalcularHashMD5(usuario.Password);
+            var usuarioAuth = await _context.
+                Usuarios.
+                FirstOrDefaultAsync(s=> s.Email==usuario.Email && s.Password==usuario.Password);
+            if (usuarioAuth!=null && usuarioAuth.Id>0 && usuarioAuth.Email == usuario.Email)
+            {
+                var claims = new[] {
+                    new Claim(ClaimTypes.Name, usuarioAuth.Email),
+                    new Claim("Id", usuarioAuth.Id.ToString()),
+                     new Claim("Nombre", usuarioAuth.Nombre),
+                    new Claim(ClaimTypes.Role, usuarioAuth.Rol)                       
+                    };
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "El email o contraseña estan incorrectos");
+                return View();
+            }               
+        }
         // GET: Usuarios/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
