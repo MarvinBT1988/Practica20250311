@@ -45,7 +45,8 @@ CREATE TABLE Usuarios (
 ALTER TABLE Usuarios
 ADD Rol VARCHAR(50);
 
--- contraseña 12345
+-- actualizacion script 2025-03-13 11:29 am
+-- contraseña 12345 
 INSERT INTO Usuarios (Nombre, Password, Email, Rol)
 VALUES
     ('Root', '827ccb0eea8a706c4c34a16891f84e7b ', 'admin@gmail.com', 'ADMINISTRADOR');
