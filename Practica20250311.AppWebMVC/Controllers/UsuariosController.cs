@@ -74,6 +74,7 @@ namespace Practica20250311.AppWebMVC.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
+            // Hola mundo
             return View();
         }
         [AllowAnonymous]
