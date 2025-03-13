@@ -151,11 +151,9 @@ namespace Practica20250311.AppWebMVC.Controllers
                 }
                 else
                 {
-                    throw;
+                    return View(usuario);
                 }
-            }
-            
-            return View(usuario);
+            }                        
         }
 
         // GET: Usuarios/Delete/5
@@ -195,7 +193,46 @@ namespace Practica20250311.AppWebMVC.Controllers
         {
             return _context.Usuarios.Any(e => e.Id == id);
         }
+        public async Task<IActionResult> Perfil()
+        {
 
+            var idStr = User.FindFirst("Id")?.Value;
+            int id=int.Parse(idStr);
+            var usuario = await _context.Usuarios.FindAsync(id);            
+            return View(usuario);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Perfil(int id, [Bind("Id,Nombre,Email,Estatus,Rol")] Usuario usuario)
+        {
+            if (id != usuario.Id)
+            {
+                return NotFound();
+            }
+            var usuarioUpdate = await _context.Usuarios
+                 .FirstOrDefaultAsync(m => m.Id == usuario.Id);
+            try
+            {
+                usuarioUpdate.Nombre = usuario.Nombre;
+                usuarioUpdate.Email = usuario.Email;
+                usuarioUpdate.Estatus = usuario.Estatus;
+                usuarioUpdate.Rol = usuario.Rol;
+                _context.Update(usuarioUpdate);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index","Home");
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UsuarioExists(usuario.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return View(usuario);
+                }
+            }
+        }
         private string CalcularHashMD5(string input)
         {
             using (MD5 md5 = MD5.Create())
